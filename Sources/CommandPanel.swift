@@ -149,6 +149,7 @@ struct TranslationCommandView: View {
         .onExitCommand(perform: dismiss)
         .task(id: model.request?.id) {
             guard let request = model.request else { configuration = nil; return }
+            #if compiler(>=6.2)
             if #available(macOS 26.0, *) {
                 let installed = await LanguageAvailability().status(from: Locale.Language(identifier: "en"), to: Locale.Language(identifier: "zh-Hans"))
                 guard !Task.isCancelled, model.request?.id == request.id else { return }
@@ -158,6 +159,7 @@ struct TranslationCommandView: View {
                     return
                 }
             }
+            #endif
             guard !Task.isCancelled, model.request?.id == request.id else { return }
             if configuration == nil {
                 configuration = TranslationSession.Configuration(source: Locale.Language(identifier: "en"), target: Locale.Language(identifier: "zh-Hans"))
@@ -179,6 +181,7 @@ struct TranslationCommandView: View {
             }
         }
     }
+    #if compiler(>=6.2)
     @available(macOS 26.0, *)
     @MainActor private func translateInstalled(_ request: CommandTranslationRequest) async {
         let session = TranslationSession(installedSource: Locale.Language(identifier: "en"), target: Locale.Language(identifier: "zh-Hans"))
@@ -201,6 +204,7 @@ struct TranslationCommandView: View {
         }
     }
 
+    #endif
 }
 
 // Keep the field editor and Escape/Return handling in AppKit's responder chain.
