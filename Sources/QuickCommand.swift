@@ -72,7 +72,7 @@ struct CommandTranslationRequest: Equatable {
         shortcut.onTrigger = { [weak self] in self?.panel.toggle() }
         shortcut.start()
     }
-    func stop() { shortcut.stop(); model.cancel() }
+    func stop() { shortcut.stop(); model.cancel(); panel.dismiss() }
     func show(input: String? = nil) {
         if let input { model.input = input }
         panel.show()

@@ -1,5 +1,4 @@
 #!/bin/zsh
 set -euo pipefail
 cd "$(dirname "$0")/.."
-"build/Cyan Command.app/Contents/MacOS/Cyan Command" --self-test
-codesign --verify --deep --strict "build/Cyan Command.app"
+python3 -c 'import json,subprocess; m=json.load(open("module.json")); subprocess.run(["build/"+m["appName"]+"/Contents/MacOS/"+m["name"],"--self-test"],check=True); subprocess.run(["codesign","--verify","--deep","--strict","build/"+m["moduleName"]],check=True); subprocess.run(["codesign","--verify","--deep","--strict","build/"+m["appName"]],check=True)'

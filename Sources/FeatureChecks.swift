@@ -4,9 +4,9 @@ import AppKit
     static func run() async {
         var failed = 0
         func check(_ condition: Bool, _ name: String) { print((condition ? "PASS " : "FAIL ") + name); if !condition { failed += 1 } }
-        check(ModuleMetadata.value["protocolVersion"] as? Int == 1, "module protocol metadata")
+        check(ModuleMetadata.value["protocolVersion"] as? Int == 2, "module protocol metadata")
         check(!ModuleMetadata.id.contains("/"), "stable module identity")
-        check(FileManager.default.fileExists(atPath: Bundle.main.resourcePath! + "/module.json"), "standalone manifest bundled")
+        check(FileManager.default.fileExists(atPath: FeatureResources.bundle.resourcePath! + "/module.json"), "standalone manifest bundled")
         check((try? TranslationCommand.parse("T: Hello"))?.text == "Hello", "translation command")
         check((try? TranslationCommand.parse("rm: anything")) == nil, "unknown command rejected")
         check((try? TranslationCommand.parse("T: " + String(repeating: "x", count: 5001))) == nil, "translation length bounded")

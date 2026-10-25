@@ -1,13 +1,15 @@
 {
   "id": "cyan-command",
   "name": "Cyan Command",
-  "version": "0.1.0-preview.2",
+  "version": "0.2.0-preview.1",
   "bundleID": "io.github.cyanyuanchu.cyan-command",
-  "protocolVersion": 1,
+  "protocolVersion": 2,
   "minMacOS": "15.0",
   "architecture": "arm64",
   "repository": "CyanYuanChu/cyan-command",
   "appName": "Cyan Command.app",
   "icon": "command",
-  "description": "快速指令与本地翻译"
+  "description": "快速指令与本地翻译",
+  "moduleName": "cyan-command.groveplugin",
+  "pluginBundleID": "io.github.cyanyuanchu.cyan-command.feature"
 }

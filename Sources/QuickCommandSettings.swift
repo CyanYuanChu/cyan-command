@@ -38,11 +38,13 @@ struct QuickCommandSettingsView: View {
 }
 
 struct QuickCommandsPage: View {
+    @StateObject private var inlineModel = QuickCommandModel()
     let service: QuickCommandService
     var p: GrovePalette
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             SectionHeading(eyebrow: "QUICK COMMANDS", title: "一句指令，随手完成。", subtitle: "右 Command＋空格唤起，输入 T: 执行英译中。")
+            if #available(macOS 15.0, *) { TranslationCommandView(model: inlineModel, dismiss: { inlineModel.cancel() }).frame(height: 300) }
             QuickCommandSettingsView(service: service, p: p)
             VStack(alignment: .leading, spacing: 16) {
                 Label("翻译", systemImage: "text.bubble").font(.system(size: 17, weight: .medium))

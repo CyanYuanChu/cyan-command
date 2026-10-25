@@ -35,7 +35,7 @@ private let quickCommandTapCallback: CGEventTapCallBack = { _, type, event, cont
 @MainActor final class GlobalShortcutManager: ObservableObject {
     @Published var enabled: Bool {
         didSet {
-            UserDefaults.standard.set(enabled, forKey: "cyan.command.shortcut")
+            FeaturePreferences.shared.set(enabled, forKey: "cyan.command.shortcut")
             if enabled { start() } else { stop(); message = "快捷键已关闭，仍可从菜单栏打开快速指令。" }
         }
     }
@@ -54,7 +54,7 @@ private let quickCommandTapCallback: CGEventTapCallBack = { _, type, event, cont
     private var notifications = Set<AnyCancellable>()
 
     init() {
-        enabled = UserDefaults.standard.object(forKey: "cyan.command.shortcut") as? Bool ?? true
+        enabled = FeaturePreferences.shared.object(forKey: "cyan.command.shortcut") as? Bool ?? true
         NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification).sink { [weak self] _ in
             Task { @MainActor in self?.refresh() }
         }.store(in: &notifications)
@@ -70,6 +70,8 @@ private let quickCommandTapCallback: CGEventTapCallBack = { _, type, event, cont
     }
     func refresh() {
         guard enabled else { return }
+        guard !CommandLine.arguments.contains("--no-shortcut") else { removeTap(); message = "验收模式：全局快捷键暂未监听，页面翻译可正常使用。"; return }
+        if Bundle.main.bundleIdentifier != "local.gitgrove.native", !NSRunningApplication.runningApplications(withBundleIdentifier: "local.gitgrove.native").isEmpty { removeTap(); message = "旧版 Grove 正在运行；页面翻译可正常使用，退出旧版后可启用全局快捷键。"; return }
         guard AXIsProcessTrusted() else {
             removeTap(); needsPermission = true
             message = "需要辅助功能权限，才能全局识别右 Command＋空格并避免同时触发系统聚焦。"
