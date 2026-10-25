@@ -1,0 +1,13 @@
+{
+  "id": "cyan-command",
+  "name": "Cyan Command",
+  "version": "0.1.0-preview.1",
+  "bundleID": "io.github.cyanyuanchu.cyan-command",
+  "protocolVersion": 1,
+  "minMacOS": "15.0",
+  "architecture": "arm64",
+  "repository": "CyanYuanChu/cyan-command",
+  "appName": "Cyan Command.app",
+  "icon": "command",
+  "description": "快速指令与本地翻译"
+}
